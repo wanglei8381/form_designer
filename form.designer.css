@@ -1,0 +1,171 @@
+* {
+  font-family: "微软雅黑", "宋体", Arial, "\5B8B\4F53", sans-serif;
+}
+
+.min-width {
+  width: 200px;
+}
+
+.mid-width {
+  width: 300px;
+}
+
+.max-width {
+  width: 400px;
+}
+
+.g-container {
+  width: 800px;
+  margin: auto;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+/*表单头部*/
+.g-head {
+  height: 80px;
+  line-height: 80px;
+  width: 100%;
+  background-color: #F5F5F5;
+  border: 1px solid #ddd;
+}
+
+.g-head h1 {
+  display: inline-block;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin: 0;
+  font-size: 30px;
+  color: #000011;
+}
+
+.g-head .btn-back {
+  float: right;
+  padding: 5px 13px;
+  margin: 20px 10px;
+}
+
+.btn-back {
+  background-color: #f0ad4e;
+  border-color: #e6a140;
+}
+
+.btn-back:hover, .btn-back:active, .btn-back:link, .btn-back:focus, .btn-back:active:focus {
+  background-color: #e19644;
+  border-color: #d28b38;
+  outline-color: #d28b38;
+}
+
+/*表单尾部*/
+.g-foot {
+  height: 80px;
+  width: 100%;
+  padding-top: 20px;
+}
+
+.g-form {
+  min-height: 500px;
+  border: 1px solid #ddd;
+  padding: 0 10px 10px;
+}
+
+.g-form .g-item {
+  min-height: 50px;
+  border-bottom: 1px solid #ddd;
+  line-height: 50px;
+}
+
+.g-item .u-title {
+  display: inline-block;
+  width: 200px;
+  text-align: right;
+  line-height: normal;
+}
+
+.g-item .u-title.u-fl {
+  float: left;
+  margin-top: 12px;
+}
+
+.g-item .u-content {
+  display: inline-block;
+  margin-left: 10px;
+}
+
+.g-item .u-content textarea {
+  margin: 5px 5px 0;
+}
+
+.g-item .u-content .u-radio {
+  margin-left: 5px;
+  line-height: normal;
+}
+
+.g-item .u-content.u-radio {
+  padding-top: 5px;
+  margin-left: 5px;
+  width: 500px;
+  line-height: normal;
+}
+
+.none {
+  display: none;
+}
+
+/* tips */
+.m-tip {
+  position: absolute;
+  z-index: 999;
+  min-width: 100px;
+  min-height: 30px;
+  background-color: #E8DEDE;
+  border-radius: 2px;
+  padding: 5px 10px;
+  box-shadow: 0 1px 2px #444343;
+}
+
+.m-tip:before {
+  content: '';
+  position: absolute;
+  z-index: 998;
+  left: 16px;
+  top: -5px;
+  transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  border: 8px solid transparent;
+  border-left-color: #E8DEDE;
+  border-top-color: #E8DEDE;
+}
+
+.u-img {
+  position: relative;
+  width: 200px;
+}
+
+.u-img img {
+  width: 100%;
+}
+
+.u-img input[type='file'] {
+  height: 0;
+  width: 0;
+  display: inline-block;
+  outline: none;
+}
+
+.u-img .u-upload, .u-img label {
+  position: absolute;
+  background-color: transparent;
+  color: transparent;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+}
+
+.u-img:hover .u-upload {
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.5);
+  color: #AB5050;
+}
