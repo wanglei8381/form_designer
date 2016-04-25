@@ -1,277 +1,5 @@
 $(function () {
 
-    var form = {
-        reason_info: 'reason_info',
-        file_name: 'file_name',
-        copies: '2',
-        remark: 'remark'
-    };
-
-    var datas = [
-        {
-            "fieldName": "日期",
-            "isMust": "1",
-            "fieldCode": "riqi",
-            "ifVisible": "1",
-            "ifEdit": "1",
-            "fieldType": "date",
-            'dateFormter': 'yyyy-MM-dd HH:mm:ss'
-        },
-        {
-            "fieldName": "文本域",
-            "ifAuto": "0",
-            "ifVariableValue": "",
-            "isMust": "1",
-            "fieldCode": "reason_info",
-            "ifVisible": "1",
-            "defaultValue": "",
-            "isOpinion": "0",
-            "id": 86,
-            "ifEdit": "1",
-            "fieldType": "textarea",
-            "orderByNum": "3"
-        },
-        {
-            "fieldName": "数字",
-            "ifAuto": "0",
-            "ifVariableValue": "",
-            "isMust": "1",
-            "fieldCode": "copies",
-            "ifVisible": "1",
-            "defaultValue": "10",
-            "isOpinion": "0",
-            "id": 87,
-            "ifEdit": "1",
-            "fieldType": "number_input",
-            "orderByNum": "4"
-        },
-        {
-            "fieldName": "金额",
-            "isMust": "1",
-            "fieldCode": "audit_person",
-            "ifVisible": "1",
-            "defaultValue": "10",
-            "ifEdit": "1",
-            "fieldType": "money_input",
-            "orderByNum": "6"
-        },
-        {
-            "fieldName": "文本框",
-            "ifAuto": "1",
-            "ifVariableValue": "",
-            "isMust": "0",
-            "fieldCode": "user_info",
-            "ifVisible": "1",
-            "defaultValue": "",
-            "isOpinion": "0",
-            "id": 84,
-            "ifEdit": "0",
-            "fieldType": "input",
-            "orderByNum": "7"
-        },
-        {
-            "fieldName": "下拉菜单",
-            "ifAuto": "1",
-            "ifVariableValue": "",
-            "isMust": "1",
-            "fieldCode": "dept",
-            "ifVisible": "1",
-            "defaultValue": "ab,cd,er,o",
-            "isOpinion": "0",
-            "id": 83,
-            "ifEdit": "1",
-            "fieldType": "select",
-            "orderByNum": "8"
-        },
-        {
-            "fieldName": "单选",
-            "ifAuto": "1",
-            "ifVariableValue": "",
-            "isMust": "1",
-            "fieldCode": "radio_option",
-            "ifVisible": "1",
-            "defaultValue": "男,女,未知",
-            "isOpinion": "0",
-            "id": 82,
-            "ifEdit": "1",
-            "fieldType": "radio",
-            "orderByNum": "9"
-        },
-        {
-            "fieldName": "多选",
-            "ifAuto": "1",
-            "ifVariableValue": "",
-            "isMust": "1",
-            "fieldCode": "checkbox_option",
-            "ifVisible": "1",
-            "defaultValue": "男,女,未知",
-            "isOpinion": "0",
-            "id": 82,
-            "ifEdit": "1",
-            "fieldType": "checkbox",
-            "orderByNum": "9"
-        },
-        {
-            "fieldName": "附件",
-            "ifAuto": "1",
-            "ifVariableValue": "",
-            "isMust": "1",
-            "fieldCode": "input_date",
-            "ifVisible": "1",
-            "defaultValue": "",
-            "isOpinion": "0",
-            "id": 82,
-            "ifEdit": "1",
-            "fieldType": "file",
-            "orderByNum": "9"
-        },
-        {
-            "fieldName": "单选部门",
-            "ifAuto": "1",
-            "ifVariableValue": "",
-            "isMust": "0",
-            "fieldCode": "input_date",
-            "ifVisible": "1",
-            "defaultValue": "",
-            "isOpinion": "0",
-            "id": 82,
-            "ifEdit": "1",
-            "fieldType": "dept_radio",
-            "orderByNum": "9"
-        },
-        {
-            "fieldName": "多选部门",
-            "ifAuto": "0",
-            "ifVariableValue": "",
-            "isMust": "0",
-            "fieldCode": "input_date2",
-            "ifVisible": "1",
-            "defaultValue": "",
-            "isOpinion": "0",
-            "id": 82,
-            "ifEdit": "1",
-            "fieldType": "dept_multiselect",
-        },
-        {
-            "fieldName": "单选人员",
-            "ifAuto": "0",
-            "ifVariableValue": "",
-            "isMust": "0",
-            "fieldCode": "input_date4",
-            "ifVisible": "1",
-            "defaultValue": "",
-            "isOpinion": "0",
-            "id": 82,
-            "ifEdit": "1",
-            "fieldType": "user_radio",
-        },
-        {
-            "fieldName": "多选人员",
-            "ifAuto": "1",
-            "ifVariableValue": "",
-            "isMust": "0",
-            "fieldCode": "input_date3",
-            "ifVisible": "1",
-            "defaultValue": "",
-            "isOpinion": "0",
-            "id": 82,
-            "ifEdit": "1",
-            "fieldType": "user_multiselect",
-        },
-        {
-            "fieldName": "分割线",
-            "ifAuto": "1",
-            "ifVariableValue": "",
-            "isMust": "1",
-            "ifVisible": "1",
-            "defaultValue": "",
-            "isOpinion": "0",
-            "id": 82,
-            "ifEdit": "1",
-            "fieldType": "splitline",
-        },
-        {
-            "fieldName": "电话",
-            "ifAuto": "1",
-            "ifVariableValue": "",
-            "isMust": "1",
-            "fieldCode": "fsfsf",
-            "ifVisible": "1",
-            "defaultValue": "",
-            "isOpinion": "0",
-            "id": 82,
-            "ifEdit": "1",
-            "fieldType": "tel",
-        },
-        {
-            "fieldName": "手机",
-            "ifAuto": "1",
-            "ifVariableValue": "",
-            "isMust": "1",
-            "fieldCode": "ssfsf",
-            "ifVisible": "1",
-            "defaultValue": "",
-            "isOpinion": "0",
-            "id": 82,
-            "ifEdit": "1",
-            "fieldType": "phone",
-        },
-        {
-            "fieldName": "邮箱",
-            "ifAuto": "1",
-            "ifVariableValue": "",
-            "isMust": "1",
-            "fieldCode": "ssfsdssssf",
-            "ifVisible": "1",
-            "defaultValue": "",
-            "isOpinion": "0",
-            "id": 82,
-            "ifEdit": "1",
-            "fieldType": "email",
-        },
-        {
-            "fieldName": "附件",
-            "ifAuto": "1",
-            "ifVariableValue": "",
-            "isMust": "1",
-            "fieldCode": "dgdgg",
-            "ifVisible": "1",
-            "defaultValue": "",
-            "isOpinion": "0",
-            "id": 82,
-            "ifEdit": "1",
-            "fieldType": "file",
-        },
-        {
-            "fieldName": "合同快照",
-            "ifAuto": "1",
-            "ifVariableValue": "",
-            "isMust": "1",
-            "fieldCode": "dgddddgg",
-            "ifVisible": "1",
-            "defaultValue": "",
-            "isOpinion": "0",
-            "id": 82,
-            "ifEdit": "1",
-            "fieldType": "image",
-        },
-        {
-            "fieldName": "表格",
-            "ifAuto": "1",
-            "ifVariableValue": "",
-            "isMust": "1",
-            "fieldCode": "tables",
-            "ifVisible": "1",
-            "defaultValue": "",
-            "isOpinion": "0",
-            "id": 82,
-            "ifEdit": "1",
-            "columnNames": "表格列1，表格列2",
-            "fieldType": "items",
-        }
-
-    ];
-
     var emptyFnc = function () {
     };
     var validator = {
@@ -493,17 +221,18 @@ $(function () {
             options.type = options.type || 'post';
             options.timeout = options.timeout || 3000;
             options.dataType = options.dataType || 'JSON';
-            options.success = function (data) {
+            var opts = _.clone(options);
+            opts.success = function (data) {
                 if (data.status === '000') {
-                    options.success(data.msg.data);
+                    options.success(data.msg);
                 } else {
-                    options.error.apply(this, data.msg.message);
+                    options.error(data.msg.message);
                 }
             };
-            options.error = function () {
-                options.error.apply(this, '网络异常，请稍后重试');
+            opts.error = function () {
+                options.error('网络异常，请稍后重试');
             };
-            $.ajax(options);
+            $.ajax(opts);
         }
     };
 
@@ -519,6 +248,11 @@ $(function () {
 
     var Items = Backbone.Collection.extend({
         initialize: function () {
+            //预定义ID属性
+            this.id = null;
+        },
+        parse: function (resp, options) {
+            return resp.data;
         },
         model: Config,
         service: requestService,
@@ -531,8 +265,11 @@ $(function () {
                 case "patch":
                     break;
                 case "read":
-                    options.url = '';
-                    options.data = {};
+                    options.url = ctx + '/workFlowData/getBillTypeTemplateFileds';
+                    options.data = JSON.stringify(
+                        {metaid: this.id, tenantId: 611}
+                    );
+                    options.contentType = "application/json";
                     this.service.ajax(options);
                     break;
                 case "delete":
@@ -704,21 +441,22 @@ $(function () {
         },
         collection: new Items(),
         'el': '#container',
-        render: function () {
-            this.$el.prepend(templateConfig.head({title: '标题', back: '#'}));
+        render: function (metaName) {
+            this.$el.prepend(templateConfig.head({title: metaName, back: '#'}));
             if (this.crud != 'r') {
                 this.$el.append(templateConfig.foot());
             }
         },
-        load: function (id, options, callback) {
+        load: function (id, opts, callback) {
             var self = this;
             callback = callback || emptyFnc;
-            if (typeof options === 'object') {
-                this.crud = options.crud || 'r';
+            if (typeof opts === 'object') {
+                this.crud = opts.crud || 'r';
             }
+            this.collection.id = id;
             this.collection.fetch({
-                success: function () {
-                    self.render();
+                success: function (col, reps, options) {
+                    self.render(reps.metaName);
                     callback();
                 }
             });
