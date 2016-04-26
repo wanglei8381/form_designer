@@ -32,7 +32,7 @@
     </div>
     <div class="g-item">
       <div class="u-title">文本输入框（长）</div>
-      <div class="u-content max-width"><input class="form-control" type="number"/></div>
+      <div class="u-content max-width"><input class="form-control" type="number" value=""/></div>
     </div>
 
     <div class="g-item">
@@ -107,7 +107,7 @@
       <div class="u-content">
         <div class="u-content min-width">
           <form method="post" action="" enctype="multipart/form-data">
-          <input class="form-control j-attach" type="file"/>
+            <input class="form-control j-attach" type="file"/>
           </form>
         </div>
         <span></span>
@@ -172,7 +172,7 @@
     <div class="g-item">
       <div class="u-title">TIME选择器</div>
       <div class="u-content">
-        <div class="u-content min-width"><input class="form-control" type="text"
+        <div class="u-content min-width"><input class="form-control" value="2019-39-22" type="text"
                                                 onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"/></div>
       </div>
     </div>
@@ -241,7 +241,6 @@
   });
 
 
-
   $('.j-attach').change(function () {
 
     var picviewPath = '/';
@@ -267,6 +266,13 @@
 
   });
 
+  //详情
+  $('input,textarea,select').css({
+    border: 0,
+    outline: 'none',
+    'box-shadow': 'none',
+    'background-color': '#fff'
+  }).attr('readonly', true).removeAttr('onclick').off();
 </script>
 </body>
 </html>

@@ -221,6 +221,7 @@ $(function () {
             options.type = options.type || 'post';
             options.timeout = options.timeout || 3000;
             options.dataType = options.dataType || 'JSON';
+            options.contentType = "application/json";
             var opts = _.clone(options);
             opts.success = function (data) {
                 if (data.status === '000') {
@@ -236,9 +237,9 @@ $(function () {
         }
     };
 
-//--------------------------------------------------------------------
-//模板封装
-//--------------------------------------------------------------------
+    //--------------------------------------------------------------------
+    //模板封装
+    //--------------------------------------------------------------------
     var Config = Backbone.Model.extend({
         initialize: function () {
 
@@ -252,7 +253,7 @@ $(function () {
             this.id = null;
         },
         parse: function (resp, options) {
-            return resp.data;
+            return resp.appModel;
         },
         model: Config,
         service: requestService,
@@ -265,11 +266,22 @@ $(function () {
                 case "patch":
                     break;
                 case "read":
-                    options.url = ctx + '/workFlowData/getBillTypeTemplateFileds';
-                    options.data = JSON.stringify(
-                        {metaid: this.id, tenantId: 611}
-                    );
-                    options.contentType = "application/json";
+                    options.url = "/emoa/workFlow";
+                    options.data = JSON.stringify({
+                        "ifno": "zywx-workFlow-0005",
+                        "condition": {
+
+                            "url": "/appdo-web-flow/workFlowData/getBillTypeTemplateFileds",
+                            "entityTypeId": "24"
+                        },
+                        "content": {
+                            "tenantId": "611",
+                            "metaid": this.id
+                        }
+                    });
+                    // options.data = JSON.stringify(
+                    // {metaid: this.id, tenantId: 611}
+                    // );
                     this.service.ajax(options);
                     break;
                 case "delete":
@@ -437,12 +449,15 @@ $(function () {
             this.$items = $('#items', this.$el);
             this.listenTo(this.collection, 'add', this.add);
             //默认是预览
-            this.crud = 'r';
+            this.crud = null;
         },
         collection: new Items(),
         'el': '#container',
         render: function (metaName) {
-            this.$el.prepend(templateConfig.head({title: metaName, back: '#'}));
+            this.$el.prepend(templateConfig.head({
+                title: metaName,
+                back: '#'
+            }));
             if (this.crud != 'r') {
                 this.$el.append(templateConfig.foot());
             }
@@ -461,6 +476,11 @@ $(function () {
                 }
             });
         },
+        fillCollection: function (list, metaName) {
+            this.crud = this.crud || 'u';
+            this.collection.set(list);
+            this.render(metaName);
+        },
         add: function (model) {
             var configView = new ConfigView({
                 model: model,
@@ -472,9 +492,9 @@ $(function () {
         }
     });
 
-//--------------------------------------------------------------------
-//数据装载
-//--------------------------------------------------------------------
+    //--------------------------------------------------------------------
+    //数据装载
+    //--------------------------------------------------------------------
     var Form = Backbone.Model.extend({
         initialize: function () {
         },
@@ -484,43 +504,69 @@ $(function () {
                 var val = attrs[key];
                 var config = this.view.configs.get(key);
                 if (config.get('isMust') == 1 && !$.trim(val)) {
-                    return {el: '#' + key, msg: '该字段是必填字段'};
+                    return {
+                        el: '#' + key,
+                        msg: '该字段是必填字段'
+                    };
                 }
 
                 var maxLen = +config.get('maxLen');
                 var minLen = +config.get('minLen');
                 if (minLen && val.length < minLen) {
-                    return {el: '#' + key, msg: '该字段最短' + minLen + '个字符'};
+                    return {
+                        el: '#' + key,
+                        msg: '该字段最短' + minLen + '个字符'
+                    };
                 }
 
                 if (maxLen && val.length > maxLen) {
-                    return {el: '#' + key, msg: '该字段最长' + maxLen + '个字符'};
+                    return {
+                        el: '#' + key,
+                        msg: '该字段最长' + maxLen + '个字符'
+                    };
                 }
 
                 switch (config.get('fieldType')) {
                     case 'email':
                         if (!validator.email.test(val)) {
-                            return {el: '#' + key, msg: '请填写正确格式的邮箱'};
+                            return {
+                                el: '#' + key,
+                                msg: '请填写正确格式的邮箱'
+                            };
                         }
                         break;
                     case 'tel':
                         if (!validator.tel.test(val)) {
-                            return {el: '#' + key, msg: '请填写正确格式的电话'};
+                            return {
+                                el: '#' + key,
+                                msg: '请填写正确格式的电话'
+                            };
                         }
                         break;
                     case 'phone':
                         if (!validator.phone.test(val)) {
-                            return {el: '#' + key, msg: '请填写正确格式的手机号'};
+                            return {
+                                el: '#' + key,
+                                msg: '请填写正确格式的手机号'
+                            };
                         }
                         break;
                     case 'number_input':
                     case 'money_input':
                         if (!validator.float.test(val)) {
-                            return {el: '#' + key, msg: '请填写正确格式的数字'};
+                            return {
+                                el: '#' + key,
+                                msg: '请填写正确格式的数字'
+                            };
                         }
                         break;
                 }
 
+            }
+        },
+        parse: function (reps, options) {
+            if (options.parse) {
+                return reps.note.entity
             }
         },
         sync: function (method, model, options) {
@@ -532,8 +578,19 @@ $(function () {
                 case "patch":
                     break;
                 case "read":
-                    return options.success(form);
-                    options.data = {};
+                    options.url = "/emoa/workFlow";
+                    options.data = JSON.stringify({
+                        "ifno": "zywx-workFlow-0005",
+                        "condition": {
+                            "url": "/appdo-web-flow/workFlowData/getBillTypeTemplateFileds",
+                            "entityTypeId": "24",
+                            "objectId": this.id
+                        },
+                        "content": {
+                            "tenantId": "611",
+                            "metaid": this.get('metaid')
+                        }
+                    });
                     this.service.ajax(options);
                     break;
                 case "delete":
@@ -617,12 +674,13 @@ $(function () {
             });
             this.stickit();
         },
-        load: function (id, callback) {
+        load: function (metaid, id, callback) {
             var self = this;
+            this.model.set('metaid', metaid);
             this.model.set('id', id);
             this.model.fetch({
-                success: function () {
-                    callback();
+                success: function (col, rep, ops) {
+                    callback(rep.msg.appModel, rep.msg.metaName);
                 }
             });
         },
@@ -637,23 +695,25 @@ $(function () {
                 },
                 error: function (err, resp, option) {
                 },
-                validate: false
+                validate: false,
+                parse: false
             });
         }
     });
 
-
-    var preview = function (id) {
+    var preview = function (metaid) {
         var itemsView = new ItemsView();
-        itemsView.load(id);
+        itemsView.load(metaid);
     };
 
-    var add = function (id) {
+    var add = function (metaid) {
         var itemsView = new ItemsView();
         var formView = new FormView();
         //将字段配置和字段的值进行绑定
         formView.configs = itemsView.collection;
-        itemsView.load(id, {crud: 'c'}, function () {
+        itemsView.load(metaid, {
+            crud: 'c'
+        }, function () {
             var def = {};
             _.each(formView.configs.toJSON(), function (config) {
                 if (config.fieldCode) {
@@ -666,33 +726,69 @@ $(function () {
         window.formView = formView;
     };
 
-    var update = function (id) {
+    var update = function (metaid, objectId, callback) {
         var itemsView = new ItemsView();
         var formView = new FormView();
         //将字段配置和字段的值进行绑定
         formView.configs = itemsView.collection;
+        formView.load(metaid, objectId, function (list, metaName) {
+            itemsView.fillCollection(list, metaName);
+            formView.render();
+            if (typeof callback === 'function') {
+                callback();
+            }
+        });
 
         //请求数据
-        async.parallel([function (callback) {
-            itemsView.load(id, {crud: 'u'}, callback);
-        }, function (callback) {
-            var def = {};
-            _.each(_.pluck(formView.configs.toJSON(), 'fieldCode'), function (field) {
-                if (config.field) {
-                    def[field] = null;
-                }
-            });
-            formView.model.set(def);
-            formView.load(id, callback);
-        }], function () {
-            formView.render();
-        });
+        //async.parallel([
+        //    function (callback) {
+        //        itemsView.load(metaid, {
+        //            crud: 'u'
+        //        }, callback);
+        //    },
+        //    function (callback) {
+        //        var def = {};
+        //        _.each(_.pluck(formView.configs.toJSON(), 'fieldCode'), function (field) {
+        //            if (config.field) {
+        //                def[field] = null;
+        //            }
+        //        });
+        //        formView.model.set(def);
+        //        formView.load(metaid, objectId, callback);
+        //    }], function () {
+        //    formView.render();
+        //    if (typeof callback === 'function') {
+        //        callback();
+        //    }
+        //});
         window.formView = formView;
+    };
+
+    var view = function (metaid, objectId) {
+
+        var itemsView = new ItemsView();
+        var formView = new FormView();
+        //将字段配置和字段的值进行绑定
+        formView.configs = itemsView.collection;
+        formView.load(metaid, objectId, function (list, metaName) {
+            itemsView.crud = 'r';
+            itemsView.fillCollection(list, metaName);
+            formView.render();
+            //详情
+            $('input,textarea,select').css({
+                border: 0,
+                outline: 'none',
+                'box-shadow': 'none',
+                'background-color': '#fff'
+            }).attr('readonly', true).removeAttr('onclick').off();
+        });
+
     };
 
     //导出
     Backbone.designer = {
         preview: preview,
+        view: view,
         add: add,
         update: update
     }
