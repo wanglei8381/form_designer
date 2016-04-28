@@ -25,5 +25,8 @@ function dateFormat(raw, format) {
 
 console.log(dateFormat());
 console.log(dateFormat(1459934682000));
-console.log(dateFormat(1459934682000,'yyyy-M-d hh:m'));
-console.log(dateFormat('2015-12-16T08:02:51.284Z','YYYY/M/DD hh:mm'));
+console.log(dateFormat(1459934682000, 'yyyy-M-d hh:m'));
+console.log(dateFormat('2015-12-16T08:02:51.284Z', 'YYYY/M/DD hh:mm'));
+
+var ret = 0 ? 2 ? 4 : 5 ? 6 : 7 : 8;
+console.log(ret);

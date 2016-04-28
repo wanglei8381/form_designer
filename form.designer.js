@@ -357,6 +357,7 @@ $(function () {
                             var html = _.map(options, function (opt) {
                                 return '<th>' + opt + '</th>';
                             }).join(' ');
+                            html += '<th></th>';
                             return html
                         }
                         return '';
@@ -367,6 +368,10 @@ $(function () {
                             var html = _.map(options, function (opt) {
                                 return '<td><input type="text" name="' + item.fieldCode + '"/></td>';
                             }).join(' ');
+                            html += '<td>' +
+                                '<span class="glyphicon glyphicon-plus u-plus" aria-hidden="true"></span>' +
+                                '<span class="glyphicon glyphicon-minus u-minus" aria-hidden="true"></span>' +
+                                '</td>';
                             return html
                         }
                         return '';
@@ -384,7 +389,36 @@ $(function () {
                 case 'file':
                     this.handleFileType();
                     break;
+                case 'items':
+                    this.handleItemsType();
+                    break;
             }
+        },
+        handleItemsType: function () {
+            var self = this;
+            $('.u-plus', this.$el).click(function () {
+                var $parent = $(this).parents('tr:first');
+                var $tmp = $parent.clone(true);
+                $tmp.find('input').val('');
+                $parent.after($tmp);
+                self.stickit();
+            });
+
+            $('.u-minus', this.$el).click(function () {
+                var self = this;
+                var $tr = $(this).parents('tr:first');
+                if ($tr.siblings().length) {//至少保留一个tr
+                    var $tmp = $tr.find('input');
+                    var cols = $tmp.length;
+                    var index = $tr.index();
+                    var vals = view.model.get([$tmp[0].name]);
+                    if (vals && vals.length && vals.length > 0) {
+                        vals.splice(index * cols, cols);
+                    }
+                    $tr.remove();
+                    self.stickit();
+                }
+            });
         },
         handleImageType: function () {
 
@@ -616,6 +650,24 @@ $(function () {
                 view.model.set(dom.name, dom.value);
             }
         },
+        onceUpdate: _.once(function ($el, vals, model, options) {
+            var $tr = $el.parents('tr:first');
+            var $tmp = $tr.find('input');
+            if (vals && vals.length && vals.length > 0) {
+                var len = parseInt(vals.length / $tmp.length) - 1;
+                var $list = $el;
+                while (len > 0) {
+                    var $cp = $tr.clone(true);
+                    $list = $list.add($cp.find('input'));
+                    $tr.after($cp);
+                    len--;
+                }
+                $list.each(function (idx, dom) {
+                    this.value = vals && vals[idx] || '';
+                });
+                this.stickit();
+            }
+        }),
         render: function () {
             var self = this;
             _.each(this.model.attributes, function (val, key) {
@@ -648,17 +700,15 @@ $(function () {
                     _key = 'input[name="' + key + '"]';
                     self.bindings[_key] = {
                         observe: key,
-                        getVal: function ($el, event, options) {
+                        getVal: function ($el) {
                             var vals = [];
                             $el.each(function (dom) {
                                 vals.push(this.value);
                             });
                             return vals;
                         },
-                        update: function ($el, val, model, options) {
-                            $el.each(function (idx, dom) {
-                                this.value = val[idx] || '';
-                            });
+                        update: function ($el, vals, model, options) {
+                            options.view.onceUpdate($el, vals, model, options);
                         }
                     };
                 } else {

@@ -7,7 +7,6 @@
   <title>FORM PLUG-IN</title>
   <!-- 新 Bootstrap 核心 CSS 文件 -->
   <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
-
   <!-- 可选的Bootstrap主题文件（一般不用引入） -->
   <!--<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">-->
   <link rel="stylesheet" href="form.designer.css">
@@ -38,6 +37,16 @@
     <div class="g-item">
       <div class="u-title">文本输入框（长）</div>
       <div class="u-content max-width"><input class="form-control" type="range"/></div>
+    </div>
+
+    <div class="g-item">
+      <div class="u-title">文本输入框（长）</div>
+      <div class="u-content max-width"><input id="add001" class="form-control" type="text"/></div>
+    </div>
+
+    <div class="g-item">
+      <div class="u-title">文本输入框（长）</div>
+      <div class="u-content max-width"><input id="add002" class="form-control" type="text"/></div>
     </div>
 
     <div class="g-item">
@@ -150,23 +159,26 @@
     <div class="g-item">
       <div class="u-title u-fl">表格</div>
       <div class="u-content">
-        <div class="u-content">
-          <table id="datatable" class="table table-bordered table-responsive">
-            <thead>
-            <tr>
-              <th>培训课程</th>
-              <th>主办部门</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-              <td><input type="text" name="tb"/></td>
-              <td><input type="text" name="tb"/></td>
-            </tr>
-            </tbody>
-          </table>
+        <table id="datatable" class="table table-bordered table-responsive">
+          <thead>
+          <tr>
+            <th>培训课程</th>
+            <th>主办部门</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td><input type="text" name="tb"/></td>
+            <td><input type="text" name="tb"/></td>
+            <td>
+              <span class="glyphicon glyphicon-plus u-plus" aria-hidden="true"></span>
+              <span class="glyphicon glyphicon-minus u-minus" aria-hidden="true"></span>
+            </td>
+          </tr>
+          </tbody>
+        </table>
 
-        </div>
       </div>
     </div>
     <div class="g-item">
@@ -208,6 +220,9 @@
 <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
 <script src="My97DatePicker/WdatePicker.js"></script>
 <script src="jquery.form.js"></script>
+<script src="underscore.js"></script>
+<script src="backbone.js"></script>
+<script src="backbone.stickit.js"></script>
 <script>
 
 
@@ -266,13 +281,80 @@
 
   });
 
+
+  $('.u-plus').click(function () {
+    var $parent = $(this).parents('tr:first');
+    var $tmp = $parent.clone(true);
+    $tmp.find('input').val('');
+    $parent.after($tmp);
+    view.stickit();
+  });
+
+  $('.u-minus').click(function () {
+    var $tr = $(this).parents('tr:first');
+    if ($tr.siblings().length) {//至少保留一个tr
+      var $tmp = $tr.find('input');
+      var cols = $tmp.length;
+      var index = $tr.index();
+      var vals = view.model.get([$tmp[0].name]);
+      if (vals && vals.length && vals.length > 0) {
+        vals.splice(index * cols, cols);
+      }
+      $tr.remove();
+      view.stickit();
+    }
+  });
+
+  var Model = Backbone.Model.extend();
+  var View = Backbone.View.extend({
+    initialize: function () {
+      this.model.set('tb', [1, 2, 3, 4]);
+      this.stickit();
+    },
+    model: new Model(),
+    el: 'body',
+    onceUpdate: _.once(function ($el, vals, model, options) {
+      var $tr = $el.parents('tr:first');
+      var $tmp = $tr.find('input');
+      if (vals && vals.length && vals.length > 0) {
+        var len = parseInt(vals.length / $tmp.length) - 1;
+        var $list = $el;
+        while (len > 0) {
+          var $cp = $tr.clone(true);
+          $list = $list.add($cp.find('input'));
+          $tr.after($cp);
+          len--;
+        }
+        $list.each(function (idx, dom) {
+          this.value = vals && vals[idx] || '';
+        });
+        this.stickit();
+      }
+    }),
+    bindings: {
+      'input[name="tb"]': {
+        observe: 'tb',
+        getVal: function ($el) {
+          var vals = [];
+          $el.each(function (dom) {
+            vals.push(this.value);
+          });
+          return vals;
+        },
+        update: function ($el, vals, model, options) {
+          options.view.onceUpdate($el, vals, model, options);
+        }
+      }
+    }
+  });
+  var view = new View();
   //详情
-  $('input,textarea,select').css({
-    border: 0,
-    outline: 'none',
-    'box-shadow': 'none',
-    'background-color': '#fff'
-  }).attr('readonly', true).removeAttr('onclick').off();
+  //  $('input,textarea,select').css({
+  //    border: 0,
+  //    outline: 'none',
+  //    'box-shadow': 'none',
+  //    'background-color': '#fff'
+  //  }).attr('readonly', true).removeAttr('onclick').off();
 </script>
 </body>
 </html>
