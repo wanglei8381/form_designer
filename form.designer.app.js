@@ -10,21 +10,454 @@ $(function () {
     };
 
     //单表类型
-    var formTemplateTypes = ['date', 'text', 'input', 'textarea', 'radio',
-        'checkbox', 'select', 'number_input', 'money_input', 'file',
-        'dept_radio', 'dept_multiselect', 'user_radio', 'user_multiselect', 'splitline',
-        'tel', 'phone', 'image', 'items', 'email'];
+    var formTemplateTypes = ['date', 'text', 'input', 'textarea', 'radio', 'checkbox', 'select', 'number_input', 'money_input', 'file', 'dept_radio', 'dept_multiselect', 'user_radio', 'user_multiselect', 'splitline', 'tel', 'phone', 'image', 'items', 'email'];
+    var likeInputTypes = ['input', 'number_input', 'money_input', 'email', 'tel', 'phone'];
+    var $template_input = $('#template_input');
+    var inputTemplateStr = $template_input.html();
+    $template_input.remove();
     var templateConfig = {};
     //初始化模板引擎（模板在页面中，通过DOM获取）
     formTemplateTypes.forEach(function (key) {
-        var $dom = $('#template_' + key);
-        templateConfig[key] = $dom.length ? _.template(
-            $dom.html()
-        ) : function () {
-            return '';
-        };
 
+        if (likeInputTypes.indexOf(key) > -1) {
+            templateConfig[key] = _.template(inputTemplateStr);
+        } else {
+            var $dom = $('#template_' + key);
+            templateConfig[key] = $dom.length ? _.template($dom.html()) : function () {
+                return '';
+            };
+            $dom.remove();
+        }
     });
+
+    //模拟数据
+    var datas = {
+        msg: {
+            "appModel": [{
+                "errorTip": "",
+                "ifVisible": "1",
+                "fieldType": "select",
+                "maxLen": "200",
+                "fieldCode": "oper_type",
+                "dateFormter": null,
+                "columnNamesType": "",
+                "numberFormter": "0",
+                "isMust": "1",
+                "id": 34,
+                "minLen": "0",
+                "orderByNum": "1",
+                "ifAuto": "0",
+                "defaultValue": "事假,病假,婚假,丧假,年假,产假,其他",
+                "ifEdit": "1",
+                "fieldName": "请假类型",
+                "isOpinion": "0",
+                "columnNames": "",
+                "ifVariableValue": null
+            }, {
+                "errorTip": "",
+                "ifVisible": "1",
+                "fieldType": "input",
+                "maxLen": "200",
+                "fieldCode": "otherreason",
+                "dateFormter": null,
+                "columnNamesType": "",
+                "numberFormter": "0",
+                "isMust": "0",
+                "id": 104,
+                "minLen": "0",
+                "orderByNum": "2",
+                "ifAuto": "0",
+                "defaultValue": "",
+                "ifEdit": "1",
+                "fieldName": "其他原因",
+                "isOpinion": "0",
+                "columnNames": "",
+                "ifVariableValue": null
+            }, {
+                "errorTip": "",
+                "ifVisible": "1",
+                "fieldType": "date",
+                "maxLen": "200",
+                "fieldCode": "begin_date",
+                "dateFormter": "yyyy-MM-dd HH:mm:ss",
+                "columnNamesType": "",
+                "numberFormter": "0",
+                "isMust": "1",
+                "id": 33,
+                "minLen": "0",
+                "orderByNum": "3",
+                "ifAuto": "0",
+                "defaultValue": "",
+                "ifEdit": "1",
+                "fieldName": "请假开始日期",
+                "isOpinion": "0",
+                "columnNames": "",
+                "ifVariableValue": ""
+            }, {
+                "errorTip": "",
+                "ifVisible": "1",
+                "fieldType": "date",
+                "maxLen": "200",
+                "fieldCode": "end_date",
+                "dateFormter": "yyyy-MM-dd HH:mm:ss",
+                "columnNamesType": "",
+                "numberFormter": "0",
+                "isMust": "1",
+                "id": 40,
+                "minLen": "0",
+                "orderByNum": "4",
+                "ifAuto": "0",
+                "defaultValue": "",
+                "ifEdit": "1",
+                "fieldName": "请假结束日期",
+                "isOpinion": "0",
+                "columnNames": "",
+                "ifVariableValue": ""
+            }, {
+                "errorTip": "",
+                "ifVisible": "1",
+                "fieldType": "input",
+                "maxLen": "200",
+                "fieldCode": "countday",
+                "dateFormter": null,
+                "columnNamesType": "",
+                "numberFormter": "0",
+                "isMust": "1",
+                "id": 102,
+                "minLen": "0",
+                "orderByNum": "5",
+                "ifAuto": "0",
+                "defaultValue": "",
+                "ifEdit": "1",
+                "fieldName": "天",
+                "isOpinion": "0",
+                "columnNames": "",
+                "ifVariableValue": ""
+            }, {
+                "errorTip": "",
+                "ifVisible": "1",
+                "fieldType": "input",
+                "maxLen": "200",
+                "fieldCode": "counthour",
+                "dateFormter": null,
+                "columnNamesType": "",
+                "numberFormter": "0",
+                "isMust": "1",
+                "id": 103,
+                "minLen": "0",
+                "orderByNum": "6",
+                "ifAuto": "0",
+                "defaultValue": null,
+                "ifEdit": "1",
+                "fieldName": "时",
+                "isOpinion": "0",
+                "columnNames": "",
+                "ifVariableValue": null
+            }, {
+                "errorTip": "",
+                "ifVisible": "1",
+                "fieldType": "input",
+                "maxLen": "200",
+                "fieldCode": "reason_info",
+                "dateFormter": null,
+                "columnNamesType": "",
+                "numberFormter": "0",
+                "isMust": "1",
+                "id": 41,
+                "minLen": "0",
+                "orderByNum": "7",
+                "ifAuto": "0",
+                "defaultValue": "",
+                "ifEdit": "1",
+                "fieldName": "请假事由",
+                "isOpinion": "0",
+                "columnNames": "",
+                "ifVariableValue": null
+            }, {
+                "errorTip": "",
+                "ifVisible": "1",
+                "fieldType": "text",
+                "maxLen": "200",
+                "fieldCode": "dept",
+                "dateFormter": null,
+                "columnNamesType": "",
+                "numberFormter": "0",
+                "isMust": "1",
+                "id": 31,
+                "minLen": "0",
+                "orderByNum": "8",
+                "ifAuto": "1",
+                "defaultValue": null,
+                "ifEdit": "0",
+                "fieldName": "部门",
+                "isOpinion": "0",
+                "columnNames": "",
+                "ifVariableValue": null
+            }, {
+                "errorTip": "",
+                "ifVisible": "1",
+                "fieldType": "text",
+                "maxLen": "200",
+                "fieldCode": "user_info",
+                "dateFormter": null,
+                "columnNamesType": "",
+                "numberFormter": "0",
+                "isMust": "1",
+                "id": 32,
+                "minLen": "0",
+                "orderByNum": "9",
+                "ifAuto": "1",
+                "defaultValue": null,
+                "ifEdit": "0",
+                "fieldName": "申请人",
+                "isOpinion": "0",
+                "columnNames": "",
+                "ifVariableValue": null
+            }, {
+                "errorTip": "",
+                "ifVisible": "0",
+                "fieldType": "text",
+                "maxLen": "200",
+                "fieldCode": "dept_opinion",
+                "dateFormter": null,
+                "columnNamesType": "",
+                "numberFormter": "0",
+                "isMust": "1",
+                "id": 36,
+                "minLen": "0",
+                "orderByNum": "10",
+                "ifAuto": "0",
+                "defaultValue": "",
+                "ifEdit": "0",
+                "fieldName": "部门领导意见",
+                "isOpinion": "1",
+                "columnNames": "",
+                "ifVariableValue": null
+            }, {
+                "errorTip": "",
+                "ifVisible": "0",
+                "fieldType": "text",
+                "maxLen": "200",
+                "fieldCode": "hr_opinion",
+                "dateFormter": null,
+                "columnNamesType": "",
+                "numberFormter": "0",
+                "isMust": "1",
+                "id": 37,
+                "minLen": "0",
+                "orderByNum": "11",
+                "ifAuto": "0",
+                "defaultValue": "",
+                "ifEdit": "0",
+                "fieldName": "人力资源部意见",
+                "isOpinion": "1",
+                "columnNames": "",
+                "ifVariableValue": null
+            }, {
+                "errorTip": "",
+                "ifVisible": "0",
+                "fieldType": "text",
+                "maxLen": "200",
+                "fieldCode": "dgm_opinion",
+                "dateFormter": null,
+                "columnNamesType": "",
+                "numberFormter": "0",
+                "isMust": "1",
+                "id": 38,
+                "minLen": "0",
+                "orderByNum": "12",
+                "ifAuto": "0",
+                "defaultValue": "",
+                "ifEdit": "0",
+                "fieldName": "直属副总意见",
+                "isOpinion": "1",
+                "columnNames": "",
+                "ifVariableValue": null
+            }, {
+                "errorTip": "",
+                "ifVisible": "0",
+                "fieldType": "text",
+                "maxLen": "200",
+                "fieldCode": "gm_opinion",
+                "dateFormter": null,
+                "columnNamesType": "",
+                "numberFormter": "0",
+                "isMust": "1",
+                "id": 39,
+                "minLen": "0",
+                "orderByNum": "13",
+                "ifAuto": "0",
+                "defaultValue": "",
+                "ifEdit": "0",
+                "fieldName": "总经理批示",
+                "isOpinion": "1",
+                "columnNames": "",
+                "ifVariableValue": ""
+            }, {
+                "errorTip": "",
+                "ifVisible": "1",
+                "fieldType": "text",
+                "maxLen": "200",
+                "fieldCode": "input_date",
+                "dateFormter": null,
+                "columnNamesType": "",
+                "numberFormter": "0",
+                "isMust": "1",
+                "id": 30,
+                "minLen": "0",
+                "orderByNum": "14",
+                "ifAuto": "1",
+                "defaultValue": null,
+                "ifEdit": "0",
+                "fieldName": "填表日期",
+                "isOpinion": "0",
+                "columnNames": "",
+                "ifVariableValue": null
+            }, {
+                "errorTip": "",
+                "ifVisible": "1",
+                "fieldType": "dept_radio",
+                "maxLen": "",
+                "fieldCode": "choose_department",
+                "dateFormter": "yyyy-MM-dd HH:mm:ss",
+                "columnNamesType": "date",
+                "numberFormter": "",
+                "isMust": "1",
+                "id": 218,
+                "minLen": "",
+                "orderByNum": "15",
+                "ifAuto": "0",
+                "defaultValue": "",
+                "ifEdit": "0",
+                "fieldName": "单选部门测试",
+                "isOpinion": "0",
+                "columnNames": "",
+                "ifVariableValue": ""
+            }, {
+                "errorTip": "",
+                "ifVisible": "1",
+                "fieldType": "user_multiselect",
+                "maxLen": "",
+                "fieldCode": "user_info_more",
+                "dateFormter": "yyyy-MM-dd HH:mm:ss",
+                "columnNamesType": "text",
+                "numberFormter": "",
+                "isMust": "1",
+                "id": 222,
+                "minLen": "",
+                "orderByNum": "16",
+                "ifAuto": "0",
+                "defaultValue": "",
+                "ifEdit": "0",
+                "fieldName": "多选人员测试",
+                "isOpinion": "0",
+                "columnNames": "",
+                "ifVariableValue": null
+            }, {
+                "errorTip": "",
+                "ifVisible": "1",
+                "fieldType": "user_radio",
+                "maxLen": "",
+                "fieldCode": "user_info_dan",
+                "dateFormter": "yyyy-MM-dd HH:mm:ss",
+                "columnNamesType": "date",
+                "numberFormter": "",
+                "isMust": "1",
+                "id": 219,
+                "minLen": "",
+                "orderByNum": "17",
+                "ifAuto": "0",
+                "defaultValue": "",
+                "ifEdit": "0",
+                "fieldName": "单选人员测试",
+                "isOpinion": "0",
+                "columnNames": "",
+                "ifVariableValue": null
+            }, {
+                "errorTip": "",
+                "ifVisible": "1",
+                "fieldType": "dept_multiselect",
+                "maxLen": "",
+                "fieldCode": "choose_part_more",
+                "dateFormter": "yyyy-MM-dd HH:mm:ss",
+                "columnNamesType": "text",
+                "numberFormter": "",
+                "isMust": "1",
+                "id": 223,
+                "minLen": "",
+                "orderByNum": "18",
+                "ifAuto": "0",
+                "defaultValue": "",
+                "ifEdit": "0",
+                "fieldName": "多选部门测试",
+                "isOpinion": "0",
+                "columnNames": "",
+                "ifVariableValue": ""
+            }, {
+                "errorTip": "",
+                "ifVisible": "1",
+                "fieldType": "change_position",
+                "maxLen": "",
+                "fieldCode": "choose_position",
+                "dateFormter": "yyyy-MM-dd HH:mm:ss",
+                "columnNamesType": "text",
+                "numberFormter": "",
+                "isMust": "1",
+                "id": 224,
+                "minLen": "",
+                "orderByNum": "19",
+                "ifAuto": "0",
+                "defaultValue": "",
+                "ifEdit": "0",
+                "fieldName": "选择职位测试",
+                "isOpinion": "0",
+                "columnNames": "",
+                "ifVariableValue": ""
+            }, {
+                "errorTip": "",
+                "ifVisible": "1",
+                "fieldType": "image",
+                "maxLen": "",
+                "fieldCode": "pic_info",
+                "dateFormter": "yyyy-MM-dd HH:mm:ss",
+                "columnNamesType": "text",
+                "numberFormter": "",
+                "isMust": "1",
+                "id": 221,
+                "minLen": "",
+                "orderByNum": "20",
+                "ifAuto": "1",
+                "defaultValue": "",
+                "ifEdit": "0",
+                "fieldName": "图片上传测试",
+                "isOpinion": "0",
+                "columnNames": "",
+                "ifVariableValue": ""
+            }, {
+                "errorTip": "",
+                "ifVisible": "1",
+                "fieldType": "items",
+                "maxLen": "",
+                "fieldCode": "table_info",
+                "dateFormter": "yyyy-MM-dd HH:mm:ss",
+                "columnNamesType": "text",
+                "numberFormter": "",
+                "isMust": "1",
+                "id": 220,
+                "minLen": "",
+                "orderByNum": "21",
+                "ifAuto": "0",
+                "defaultValue": "",
+                "ifEdit": "0",
+                "fieldName": "表格插件测试",
+                "isOpinion": "1",
+                "columnNames": "姓名,编号，性别",
+                "ifVariableValue": ""
+            }],
+            "metaName": "请假申请单",
+            "sysDate": "2016-05-04"
+        }
+    };
 
     //--------------------------------------------------------------------
     //模板封装
@@ -39,13 +472,14 @@ $(function () {
         initialize: function () {
         },
         parse: function (resp, options) {
-            return resp.appModel;
+            return resp.msg.appModel;
         },
         model: Config,
         service: requestService,
         sync: function (method, model, options) {
             switch (method) {
                 case "read":
+                    return options.success(datas);
                     var workflowdata = options.workflowdata;
 
                     var data = {
@@ -59,8 +493,8 @@ $(function () {
                         }
                     };
                     options.params = {
-                        url : workFlowUrl,
-                        data : data
+                        url: workFlowUrl,
+                        data: data
                     };
                     this.service.request(options);
                     break;
@@ -143,7 +577,83 @@ $(function () {
                 case 'items':
                     this.handleItemsType();
                     break;
+                case 'date':
+                    this.handleDateType();
+                    break;
             }
+        },
+        changetime: function (strTime, fieldCode, model) {
+            var self = this;
+            var dateFormter = this.model.get('dateFormter');
+            var d = new Date();
+            var year = d.getFullYear(),
+                moth = d.getMonth() + 1,
+                date = d.getDate(),
+                hour = d.getHours(),
+                mins = d.getMinutes(),
+                secs = d.getSeconds();
+
+            var pickTime = '([0-9]{4})[^0-9]+([0-9]{1,2})[^0-9]+([0-9]{1,2})';
+            var onlyYMD = multi = Math.floor((strTime.length - 10) / 3);
+            while (multi--) {
+                pickTime += '[^0-9]+([0-9]{1,2})';
+            }
+            var pickTimeReg = new RegExp(pickTime);
+            var times = pickTimeReg.exec(strTime);
+            if (times) {
+                var size = times.length;
+                year = parseInt(times[1]);
+                moth = parseInt(times[2]);
+                date = parseInt(times[3]);
+                if (size >= 5) {
+                    hour = parseInt(times[4]);
+                    if (size >= 6) {
+                        mins = parseInt(times[5]);
+                        if (size >= 7) {
+                            secs = parseInt(times[6]);
+                        }
+                    }
+                }
+            }
+
+            var handleResult = function (d) {
+                var val = dateFormat(d, dateFormter);
+                model.set(fieldCode, val);
+            };
+
+            uexControl.cbOpenDatePicker = function (opId, dataType, dateStr) {
+                var date = JSON.parse(dateStr);
+                d.setFullYear(date.year);
+                d.setMonth(date.month);
+                d.setDate(date.day);
+                if (onlyYMD) {
+                    uexControl.cbOpenTimePicker = function (opId, dataType, timeStr) {
+                        var time = JSON.parse(timeStr);
+                        d.setHours(time.hour);
+                        d.setMinutes(time.minute);
+                        d.setSeconds(time.second);
+                        handleResult(d);
+                    }
+                    uexControl.openTimePicker(hour, mins, secs);
+                } else {
+                    handleResult(d);
+                }
+            }
+            uexControl.openDatePicker(year, moth, date);
+        },
+        handleDateType: function () {
+            var self = this;
+            appcan.button($('.time', this.$el), "btn-act", function () {
+                var model = self.baseView.formView.model;
+                var fieldCode = this.getAttribute('data-fieldCode');
+                var val = model.get(fieldCode);
+                try {
+                    self.changetime(val, fieldCode, model);
+                } catch (e) {
+                    alert(e.stack);
+                }
+            });
+
         },
         handleItemsType: function () {
             var self = this;
@@ -169,7 +679,7 @@ $(function () {
         'el': '#list',
         render: function (metaName) {
         },
-        load: function (id, opts, callback) {
+        load: function (opts, callback) {
             var self = this;
             callback = callback || emptyFnc;
             if (typeof opts === 'object') {
@@ -177,7 +687,7 @@ $(function () {
             }
             this.collection.fetch({
                 success: function (col, reps, options) {
-                    callback();
+                    callback(col, reps, options);
                 },
                 workflowdata: this.workflowdata
             });
@@ -209,61 +719,44 @@ $(function () {
             for (var key in attrs) {
                 var val = attrs[key];
                 var config = this.view.configs.get(key);
+                if (!config || config.get('ifVisible') == 0) {
+                    continue;
+                }
+
                 if (config.get('isMust') == 1 && !$.trim(val)) {
-                    return {
-                        el: '#' + key,
-                        msg: '该字段是必填字段'
-                    };
+                    return config.get('fieldName') + '是必填字段';
                 }
 
                 var maxLen = +config.get('maxLen');
                 var minLen = +config.get('minLen');
                 if (minLen && val.length < minLen) {
-                    return {
-                        el: '#' + key,
-                        msg: '该字段最短' + minLen + '个字符'
-                    };
+                    return config.get('fieldName') + '字段最短' + minLen + '个字符'
                 }
 
                 if (maxLen && val.length > maxLen) {
-                    return {
-                        el: '#' + key,
-                        msg: '该字段最长' + maxLen + '个字符'
-                    };
+                    return config.get('fieldName') + '字段最长' + maxLen + '个字符'
                 }
 
                 switch (config.get('fieldType')) {
                     case 'email':
                         if (!validator.email.test(val)) {
-                            return {
-                                el: '#' + key,
-                                msg: '请填写正确格式的邮箱'
-                            };
+                            return config.get('fieldName') + '字段的格式不正确'
                         }
                         break;
                     case 'tel':
                         if (!validator.tel.test(val)) {
-                            return {
-                                el: '#' + key,
-                                msg: '请填写正确格式的电话'
-                            };
+                            return config.get('fieldName') + '字段的格式不正确'
                         }
                         break;
                     case 'phone':
                         if (!validator.phone.test(val)) {
-                            return {
-                                el: '#' + key,
-                                msg: '请填写正确格式的手机号'
-                            };
+                            return config.get('fieldName') + '字段的格式不正确'
                         }
                         break;
                     case 'number_input':
                     case 'money_input':
                         if (!validator.float.test(val)) {
-                            return {
-                                el: '#' + key,
-                                msg: '请填写正确格式的数字'
-                            };
+                            return config.get('fieldName') + '字段的格式不正确'
                         }
                         break;
                 }
@@ -278,6 +771,23 @@ $(function () {
         sync: function (method, model, options) {
             switch (method) {
                 case "create":
+                    alert(JSON.stringify(this.toJSON()));
+                    return;
+                    options.url = workFlowUrl;
+                    options.data = JSON.stringify({
+                        "ifno": "zywx-workFlow-0008",
+                        "condition": {
+                            "url": "/appdo-web-flow/workFlowAction/saveForm/" + options.flag,
+                            "masifno": "zywx-note-0001"
+                        },
+                        "content": {
+                            "tenantId": options.workflowdata.tenantId,
+                            "entityTypeId": "24",
+                            "entity": this.toJSON()
+                        }
+                    });
+                    this.service.ajax(options);
+
                     break;
                 case "update":
                     break;
@@ -312,16 +822,11 @@ $(function () {
             this.model.view = this;
         },
         model: new Form(),
-        el: '#container',
+        el: '#list',
         events: {
             'click #submit': 'save'
         },
         bindings: {},
-        handBindings: {//一些操作无法自动数据绑定，需要手动处理
-            time: function (dom, view) {
-                view.model.set(dom.name, dom.value);
-            }
-        },
         onceUpdate: _.once(function ($el, vals, model, options) {
             var $tr = $el.parents('tr:first');
             var $tmp = $tr.find('input');
@@ -344,55 +849,59 @@ $(function () {
             var self = this;
             _.each(this.model.attributes, function (val, key) {
                 var config = self.configs.get(key);
+                if (!config) return;
                 var fieldType = config.get('fieldType');
                 var _key = '#' + key;
+
                 var getVal = function ($el, event, options) {
                     var val = $el.val();
                     var curVal = options.view.model.get(key);
                     if (config.get('ifEdit') == 1) {
                         if (!$.trim(val) && config.get('isMust') == 1) {
-                            $el.tip('该字段是必填字段');
+                            appcan.window.openToast("该字段是必填字段", 1500, 5);
                         }
                         return val;
                     } else {
-                        $el.tip('该字段不允许修改');
+                        appcan.window.openToast("该字段不允许修改", 1500, 5);
                         $el.val(curVal);
                         return curVal;
                     }
                 };
-                if (fieldType === 'checkbox' || fieldType === 'radio') {
-                    _key = 'input[name="' + key + '"]';
-                    self.bindings[_key] = {
-                        observe: key,
-                        updateView: function (val) {
-                            return val != null && val.trim().length != 0;
-                        }
-                    };
-                } else if (fieldType === 'items') {
-                    _key = 'input[name="' + key + '"]';
-                    self.bindings[_key] = {
-                        observe: key,
-                        getVal: function ($el) {
-                            var vals = [];
-                            $el.each(function (dom) {
-                                vals.push(this.value);
-                            });
-                            return vals;
-                        },
-                        update: function ($el, vals, model, options) {
-                            options.view.onceUpdate($el, vals, model, options);
-                        }
-                    };
-                } else {
-                    self.bindings[_key] = {
-                        observe: key,
-                        getVal: getVal,
-                        updateView: function (val) {
-                            return val != null && val.trim().length != 0;
-                        }
-                    };
-                }
 
+                var updateView = function (val) {
+                    return val != null && val.trim().length != 0;
+                };
+
+                switch (fieldType) {
+                    case 'checkbox':
+                    case 'radio':
+                        _key = 'input[name="' + key + '"]';
+                        self.bindings[_key] = {
+                            observe: key,
+                            updateView: updateView
+                        };
+                        break;
+                    case 'items':
+                        break;
+                    case 'select':
+                        self.bindings[_key] = {
+                            observe: key,
+                            getVal: function ($el, event, options) {
+                                var val = getVal($el, event, options);
+                                $el.prev().html(val || '请选择');
+                                return val;
+                            },
+                            updateView: updateView
+                        };
+                        break;
+                    default :
+                        self.bindings[_key] = {
+                            observe: key,
+                            getVal: getVal,
+                            updateView: updateView
+                        };
+                        break;
+                }
             });
             this.stickit();
         },
@@ -406,38 +915,48 @@ $(function () {
                 }
             });
         },
-        save: function () {
-            if (!this.model.isValid()) {
-                $(this.model.validationError.el, this.$el).tip(this.model.validationError.msg);
-                return false;
-            }
+        save: function (flag) {
+
+            this.model.on('invalid', function (model, error, options) {
+                appcan.window.openToast(error, 1500, 5);
+                appcan.window.publish("workFlow_add");
+            });
 
             this.model.save({}, {
                 success: function (data, resp, option) {
                 },
                 error: function (err, resp, option) {
                 },
-                validate: false,
-                parse: false
+                parse: false,
+                flag: flag,
+                workflowdata: this.workflowdata
             });
         }
     });
 
-    var add = function (metaid) {
+    var add = function () {
         var itemsView = new ItemsView();
         var formView = new FormView();
+        itemsView.formView = formView;
         //将字段配置和字段的值进行绑定
         formView.configs = itemsView.collection;
-        itemsView.load(metaid, {
+        formView.workflowdata = itemsView.workflowdata;
+        itemsView.load({
             crud: 'c'
-        }, function () {
+        }, function (col, reps, options) {
             var def = {};
             _.each(formView.configs.toJSON(), function (config) {
                 if (config.fieldCode) {
-                    def[config.fieldCode] = config.defaultValue && config.defaultValue.split(/[,，，]/)[0];
+                    if (config.fieldType === 'date') {
+                        def[config.fieldCode] = dateFormat(Date.now(), config.dateFormter);
+                    } else {
+                        def[config.fieldCode] = config.defaultValue && config.defaultValue.split(/[,，，]/)[0];
+                    }
                 }
             });
             formView.model.set(def);
+            formView.model.set('input_date', reps.msg.sysDate);
+            formView.model.set(initModel);
             formView.render();
         });
         window.formView = formView;
@@ -446,6 +965,7 @@ $(function () {
     var update = function (metaid, objectId, callback) {
         var itemsView = new ItemsView();
         var formView = new FormView();
+        itemsView.formView = formView;
         //将字段配置和字段的值进行绑定
         formView.configs = itemsView.collection;
         formView.load(metaid, objectId, function (list, metaName) {
@@ -482,9 +1002,23 @@ $(function () {
 
     //导出
     Backbone.designer = {
-        preview: preview,
         view: view,
         add: add,
         update: update
     }
+
+    try {
+        window.userInfo = JSON.parse(appcan.getLocVal("OA_USER_INFO"));
+        var user = userInfo.loginUser.entity;
+        var initModel = {
+            dept: user.department[0].dptName,
+            deptId: user.department[0].dptId,
+            user_info: user.fullName,
+            user_info_id: appcan.getLocVal("userId")
+        };
+        Backbone.designer.add();
+    } catch (e) {
+        alert(e.stack);
+    }
+
 });
